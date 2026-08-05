@@ -1,0 +1,31 @@
+/**
+ * §2 Design System — theme tokens.
+ * Values are "R G B" triplets (no rgb() wrapper) so Tailwind's
+ * `rgb(var(--x) / <alpha-value>)` pattern can apply opacity.
+ *
+ * Light: warm off-white background, soft gray cards, subtle borders, high
+ * contrast text. Dark: deep charcoal background, slightly lighter cards,
+ * soft white text — never pure black/white in dark mode.
+ */
+
+:root {
+  --surface: 250 249 246; /* warm off-white */
+  --surface-card: 255 255 254;
+  --surface-raised: 255 255 255;
+  --border: 228 225 219;
+  --border-subtle: 240 238 234;
+  --text-primary: 23 23 22;
+  --text-secondary: 82 82 78;
+  --text-tertiary: 130 128 122;
+}
+
+.dark {
+  --surface: 22 22 24; /* deep charcoal, not pure black */
+  --surface-card: 30 30 33;
+  --surface-raised: 38 38 41;
+  --border: 54 54 58;
+  --border-subtle: 42 42 46;
+  --text-primary: 245 245 244; /* soft white, not pure white */
+  --text-secondary: 180 180 178;
+  --text-tertiary: 130 130 128;
+}
