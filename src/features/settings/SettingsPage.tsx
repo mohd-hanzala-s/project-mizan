@@ -1,5 +1,5 @@
-import { ThemeToggle } from './ThemeToggle'
-import { AppLockSettings } from './AppLockSettings'
+import { ThemeToggle } from "./ThemeToggle";
+import { AppLockSettings } from "./AppLockSettings";
 
 export function SettingsPage() {
   return (
@@ -17,8 +17,9 @@ export function SettingsPage() {
       </section>
 
       <p className="text-body-sm text-text-tertiary">
-        Currency, categories, backups, and more settings arrive alongside their respective phases.
+        Currency, categories, backups, and more settings arrive alongside their
+        respective phases.
       </p>
     </div>
-  )
+  );
 }

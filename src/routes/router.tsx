@@ -1,16 +1,16 @@
-import { Routes, Route } from 'react-router-dom'
-import { AppShell } from '@/components/layout/AppShell'
-import { DashboardPage } from '@/features/dashboard/DashboardPage'
-import { TransactionsPage } from '@/features/transactions/TransactionsPage'
-import { AccountsPage } from '@/features/accounts/AccountsPage'
-import { AccountDetailPage } from '@/features/accounts/AccountDetailPage'
-import { BudgetsPage } from '@/features/budgets/BudgetsPage'
-import { LoansPage } from '@/features/loans/LoansPage'
-import { RecurringPage } from '@/features/recurring/RecurringPage'
-import { CalendarPage } from '@/features/calendar/CalendarPage'
-import { ReportsPage } from '@/features/reports/ReportsPage'
-import { InsightsPage } from '@/features/insights/InsightsPage'
-import { SettingsPage } from '@/features/settings/SettingsPage'
+import { Routes, Route } from "react-router-dom";
+import { AppShell } from "@/components/layout/AppShell";
+import { DashboardPage } from "@/features/dashboard/DashboardPage";
+import { TransactionsPage } from "@/features/transactions/TransactionsPage";
+import { AccountsPage } from "@/features/accounts/AccountsPage";
+import { AccountDetailPage } from "@/features/accounts/AccountDetailPage";
+import { BudgetsPage } from "@/features/budgets/BudgetsPage";
+import { LoansPage } from "@/features/loans/LoansPage";
+import { RecurringPage } from "@/features/recurring/RecurringPage";
+import { CalendarPage } from "@/features/calendar/CalendarPage";
+import { ReportsPage } from "@/features/reports/ReportsPage";
+import { InsightsPage } from "@/features/insights/InsightsPage";
+import { SettingsPage } from "@/features/settings/SettingsPage";
 
 export function AppRoutes() {
   return (
@@ -29,5 +29,5 @@ export function AppRoutes() {
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
     </Routes>
-  )
+  );
 }

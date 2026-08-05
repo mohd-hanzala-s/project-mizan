@@ -1,5 +1,5 @@
-import { Lightbulb } from 'lucide-react'
-import { PlaceholderPage } from '@/components/common/PlaceholderPage'
+import { Lightbulb } from "lucide-react";
+import { PlaceholderPage } from "@/components/common/PlaceholderPage";
 
 export function InsightsPage() {
   return (
@@ -9,5 +9,5 @@ export function InsightsPage() {
       description="Financial Health Score, patterns, and personalized recommendations."
       phase="Phase 9 — Intelligence"
     />
-  )
+  );
 }

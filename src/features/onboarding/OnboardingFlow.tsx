@@ -1,21 +1,21 @@
-import { useState } from 'react'
-import { useSettingsStore } from '@/app/settingsStore'
-import { WelcomeStep } from './WelcomeStep'
-import { AppLockStep } from './AppLockStep'
-import { SampleDataStep } from './SampleDataStep'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/utils/cn'
+import { useState } from "react";
+import { useSettingsStore } from "@/app/settingsStore";
+import { WelcomeStep } from "./WelcomeStep";
+import { AppLockStep } from "./AppLockStep";
+import { SampleDataStep } from "./SampleDataStep";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/utils/cn";
 
-const STEPS = [WelcomeStep, AppLockStep, SampleDataStep]
+const STEPS = [WelcomeStep, AppLockStep, SampleDataStep];
 
 export function OnboardingFlow() {
-  const [step, setStep] = useState(0)
-  const update = useSettingsStore((s) => s.update)
-  const StepComponent = STEPS[step]
-  const isLast = step === STEPS.length - 1
+  const [step, setStep] = useState(0);
+  const update = useSettingsStore((s) => s.update);
+  const StepComponent = STEPS[step];
+  const isLast = step === STEPS.length - 1;
 
   async function finish() {
-    await update({ onboardingCompleted: true })
+    await update({ onboardingCompleted: true });
   }
 
   return (
@@ -25,15 +25,19 @@ export function OnboardingFlow() {
       </div>
 
       <div className="flex flex-col items-center gap-24 px-24 pb-48">
-        <div className="flex gap-8" role="tablist" aria-label="Onboarding progress">
+        <div
+          className="flex gap-8"
+          role="tablist"
+          aria-label="Onboarding progress"
+        >
           {STEPS.map((_, i) => (
             <span
               key={i}
               role="tab"
               aria-selected={i === step}
               className={cn(
-                'h-8 w-8 rounded-full',
-                i === step ? 'bg-income' : 'bg-neutral-200 dark:bg-neutral-700'
+                "h-8 w-8 rounded-full",
+                i === step ? "bg-income" : "bg-neutral-200 dark:bg-neutral-700",
               )}
             />
           ))}
@@ -65,5 +69,5 @@ export function OnboardingFlow() {
         </div>
       </div>
     </div>
-  )
+  );
 }

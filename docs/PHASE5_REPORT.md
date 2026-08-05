@@ -123,28 +123,34 @@ Defined in `src/types/entities.ts`:
 
 ```ts
 type RecurringFrequency =
-  | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'halfYearly' | 'yearly' | 'custom'
+  | "daily"
+  | "weekly"
+  | "monthly"
+  | "quarterly"
+  | "halfYearly"
+  | "yearly"
+  | "custom";
 ```
 
 **`RecurringRule`** (interface, table `recurring_rules`)
 
-| Field                | Type                             | Notes |
-|----------------------|----------------------------------|-------|
-| `id`                 | `string`                         | `crypto.randomUUID()` |
-| `title`              | `string`                         | trimmed |
-| `amount`             | `number`                         | > 0 |
-| `type`               | `'expense' \| 'income'`          | **added field** (see §20) |
-| `categoryId`         | `string`                         | must exist and not be archived |
-| `accountId`          | `string`                         | **added field** (see §20) |
-| `frequency`          | `RecurringFrequency`             | |
-| `startDate`          | `string` (yyyy-mm-dd)            | first occurrence |
-| `endDate`            | `string \| null`                 | optional end |
-| `nextExecution`      | `string` (ISO datetime)          | materialized next occurrence, indexed |
-| `autoGenerate`       | `boolean`                        | false = remind-only rule |
-| `reminderDays`       | `number`                         | 0 = on the day |
-| `active`             | `boolean`                        | pause sets false |
-| `customIntervalDays` | `number` (optional)              | only meaningful for `custom` |
-| `createdAt` / `updatedAt` | `string` (ISO)              | |
+| Field                     | Type                    | Notes                                 |
+| ------------------------- | ----------------------- | ------------------------------------- |
+| `id`                      | `string`                | `crypto.randomUUID()`                 |
+| `title`                   | `string`                | trimmed                               |
+| `amount`                  | `number`                | > 0                                   |
+| `type`                    | `'expense' \| 'income'` | **added field** (see §20)             |
+| `categoryId`              | `string`                | must exist and not be archived        |
+| `accountId`               | `string`                | **added field** (see §20)             |
+| `frequency`               | `RecurringFrequency`    |                                       |
+| `startDate`               | `string` (yyyy-mm-dd)   | first occurrence                      |
+| `endDate`                 | `string \| null`        | optional end                          |
+| `nextExecution`           | `string` (ISO datetime) | materialized next occurrence, indexed |
+| `autoGenerate`            | `boolean`               | false = remind-only rule              |
+| `reminderDays`            | `number`                | 0 = on the day                        |
+| `active`                  | `boolean`               | pause sets false                      |
+| `customIntervalDays`      | `number` (optional)     | only meaningful for `custom`          |
+| `createdAt` / `updatedAt` | `string` (ISO)          |                                       |
 
 Plus the service-layer interfaces `CreateRecurringRuleInput`,
 `UpdateRecurringRuleInput` (= same shape), and `UpcomingObligation` (the
@@ -265,8 +271,8 @@ already present from Phase 1.
 `AppShell.tsx` runs §4's background processing on startup:
 
 ```ts
-load()
-RecurringService.generateDue().then(() => load())
+load();
+RecurringService.generateDue().then(() => load());
 ```
 
 Idempotent and single-flight, so it can't double-generate against the
@@ -278,7 +284,7 @@ From §6 / §9 Phase 5, as actually implemented:
 
 1. **Rules require a real, non-archived category and an existing account.**
    Archived categories are refused (§6 "recurring rules can't reference
-   deleted categories"); archived *accounts* are still valid targets but
+   deleted categories"); archived _accounts_ are still valid targets but
    generation skips them (see §12).
 2. **`nextExecution` is materialized** at create/update/resume from the
    schedule; reminders and generation read it, never recompute it per check.
@@ -516,7 +522,7 @@ recurring-load changes). No existing test was weakened.
 ## 20. Architectural Decisions
 
 1. **`RecurringRule.type` ('expense'|'income') added.** §5's field list has no
-   type, but a rule that *generates transactions* must know the sign.
+   type, but a rule that _generates transactions_ must know the sign.
    Inferring from the category was judged brittle; the precedent
    (`transferDirection` in Phase 3) is a documented added field.
 2. **`RecurringRule.accountId` added.** The entity's spec fields predate the

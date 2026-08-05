@@ -1,7 +1,7 @@
-import { cn } from '@/utils/cn'
+import { cn } from "@/utils/cn";
 
 interface ToastProps {
-  message: string | null
+  message: string | null;
 }
 
 export function Toast({ message }: ToastProps) {
@@ -10,8 +10,8 @@ export function Toast({ message }: ToastProps) {
       role="status"
       aria-live="polite"
       className={cn(
-        'pointer-events-none fixed inset-x-0 bottom-96 z-50 flex justify-center transition-opacity duration-standard',
-        message ? 'opacity-100' : 'opacity-0'
+        "pointer-events-none fixed inset-x-0 bottom-96 z-50 flex justify-center transition-opacity duration-standard",
+        message ? "opacity-100" : "opacity-0",
       )}
     >
       {message && (
@@ -20,5 +20,5 @@ export function Toast({ message }: ToastProps) {
         </div>
       )}
     </div>
-  )
+  );
 }

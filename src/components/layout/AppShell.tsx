@@ -1,37 +1,37 @@
-import { useEffect, useState } from 'react'
-import { Outlet } from 'react-router-dom'
-import { NavigationRail } from './NavigationRail'
-import { BottomNavigation } from './BottomNavigation'
-import { MoreSheet } from './MoreSheet'
-import { TopAppBar } from './TopAppBar'
-import { FloatingActionButton } from './FloatingActionButton'
-import { BottomSheet } from './BottomSheet'
-import { Toast } from '@/components/common/Toast'
-import { useToast } from '@/hooks/useToast'
-import { useTransactionsStore } from '@/features/transactions/transactionsStore'
-import { TransactionEntrySheet } from '@/features/transactions/TransactionEntrySheet'
-import { RecurringService } from '@/services/RecurringService'
+import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
+import { NavigationRail } from "./NavigationRail";
+import { BottomNavigation } from "./BottomNavigation";
+import { MoreSheet } from "./MoreSheet";
+import { TopAppBar } from "./TopAppBar";
+import { FloatingActionButton } from "./FloatingActionButton";
+import { BottomSheet } from "./BottomSheet";
+import { Toast } from "@/components/common/Toast";
+import { useToast } from "@/hooks/useToast";
+import { useTransactionsStore } from "@/features/transactions/transactionsStore";
+import { TransactionEntrySheet } from "@/features/transactions/TransactionEntrySheet";
+import { RecurringService } from "@/services/RecurringService";
 
 export function AppShell() {
-  const [moreOpen, setMoreOpen] = useState(false)
-  const { message, show } = useToast()
+  const [moreOpen, setMoreOpen] = useState(false);
+  const { message, show } = useToast();
 
-  const sheetOpen = useTransactionsStore((s) => s.sheetOpen)
-  const editingTransaction = useTransactionsStore((s) => s.editingTransaction)
-  const openAddSheet = useTransactionsStore((s) => s.openAddSheet)
-  const closeSheet = useTransactionsStore((s) => s.closeSheet)
-  const pendingUndo = useTransactionsStore((s) => s.pendingUndo)
-  const dismissUndo = useTransactionsStore((s) => s.dismissUndo)
-  const load = useTransactionsStore((s) => s.load)
+  const sheetOpen = useTransactionsStore((s) => s.sheetOpen);
+  const editingTransaction = useTransactionsStore((s) => s.editingTransaction);
+  const openAddSheet = useTransactionsStore((s) => s.openAddSheet);
+  const closeSheet = useTransactionsStore((s) => s.closeSheet);
+  const pendingUndo = useTransactionsStore((s) => s.pendingUndo);
+  const dismissUndo = useTransactionsStore((s) => s.dismissUndo);
+  const load = useTransactionsStore((s) => s.load);
 
   useEffect(() => {
     // Background processing (§4): generate any due recurring entries at
     // startup, then reload so the dashboard and lists see them. Idempotent
     // and single-flight, so this is safe alongside the Recurring page's own
     // load.
-    load()
-    RecurringService.generateDue().then(() => load())
-  }, [load])
+    load();
+    RecurringService.generateDue().then(() => load());
+  }, [load]);
 
   return (
     <div className="flex h-dvh w-full bg-surface">
@@ -49,14 +49,17 @@ export function AppShell() {
           className="absolute bottom-24 right-24 landscape:bottom-24 portrait:bottom-96"
         />
 
-        <BottomNavigation onMoreClick={() => setMoreOpen(true)} moreActive={moreOpen} />
+        <BottomNavigation
+          onMoreClick={() => setMoreOpen(true)}
+          moreActive={moreOpen}
+        />
         <MoreSheet open={moreOpen} onClose={() => setMoreOpen(false)} />
       </div>
 
       <BottomSheet
         open={sheetOpen}
         onClose={closeSheet}
-        title={editingTransaction ? 'Edit Transaction' : 'Add Transaction'}
+        title={editingTransaction ? "Edit Transaction" : "Add Transaction"}
       >
         <TransactionEntrySheet />
       </BottomSheet>
@@ -72,8 +75,8 @@ export function AppShell() {
             <button
               type="button"
               onClick={() => {
-                pendingUndo.onUndo()
-                dismissUndo()
+                pendingUndo.onUndo();
+                dismissUndo();
               }}
               className="font-semibold text-income underline"
             >
@@ -85,5 +88,5 @@ export function AppShell() {
 
       <Toast message={message} />
     </div>
-  )
+  );
 }

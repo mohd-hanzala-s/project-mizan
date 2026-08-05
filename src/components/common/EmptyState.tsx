@@ -1,12 +1,12 @@
-import type { LucideIcon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import type { LucideIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface EmptyStateProps {
-  icon: LucideIcon
-  title: string
-  description: string
-  actionLabel?: string
-  onAction?: () => void
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  actionLabel?: string;
+  onAction?: () => void;
 }
 
 export function EmptyState({
@@ -23,7 +23,9 @@ export function EmptyState({
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-h3 text-text-primary">{title}</h2>
-        <p className="max-w-[320px] text-body text-text-secondary">{description}</p>
+        <p className="max-w-[320px] text-body text-text-secondary">
+          {description}
+        </p>
       </div>
       {actionLabel && onAction && (
         <Button variant="primary" onClick={onAction} className="mt-8">
@@ -31,5 +33,5 @@ export function EmptyState({
         </Button>
       )}
     </div>
-  )
+  );
 }

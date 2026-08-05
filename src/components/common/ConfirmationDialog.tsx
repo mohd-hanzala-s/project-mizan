@@ -1,25 +1,25 @@
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 
 interface ConfirmationDialogProps {
-  open: boolean
-  title: string
-  description: string
-  confirmLabel?: string
-  destructive?: boolean
-  onConfirm: () => void
-  onCancel: () => void
+  open: boolean;
+  title: string;
+  description: string;
+  confirmLabel?: string;
+  destructive?: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
 export function ConfirmationDialog({
   open,
   title,
   description,
-  confirmLabel = 'Confirm',
+  confirmLabel = "Confirm",
   destructive = true,
   onConfirm,
   onCancel,
 }: ConfirmationDialogProps) {
-  if (!open) return null
+  if (!open) return null;
 
   return (
     <div
@@ -28,7 +28,11 @@ export function ConfirmationDialog({
       aria-modal="true"
       aria-label={title}
     >
-      <button aria-label="Cancel" onClick={onCancel} className="absolute inset-0 bg-black/40" />
+      <button
+        aria-label="Cancel"
+        onClick={onCancel}
+        className="absolute inset-0 bg-black/40"
+      />
       <div className="relative flex w-full max-w-[360px] flex-col gap-16 rounded-lg bg-surface-card p-24 shadow-floating">
         <div className="flex flex-col gap-8">
           <h2 className="text-h3 text-text-primary">{title}</h2>
@@ -38,11 +42,14 @@ export function ConfirmationDialog({
           <Button variant="tertiary" onClick={onCancel}>
             Cancel
           </Button>
-          <Button variant={destructive ? 'destructive' : 'primary'} onClick={onConfirm}>
+          <Button
+            variant={destructive ? "destructive" : "primary"}
+            onClick={onConfirm}
+          >
             {confirmLabel}
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,29 +1,29 @@
-import { useState } from 'react'
-import { ArrowDown } from 'lucide-react'
-import { TransactionService } from '@/services/TransactionService'
-import { AccountSelector } from '@/components/forms/AccountSelector'
-import { CurrencyInput } from '@/components/forms/CurrencyInput'
-import { Button } from '@/components/ui/button'
-import type { Transaction } from '@/types/entities'
+import { useState } from "react";
+import { ArrowDown } from "lucide-react";
+import { TransactionService } from "@/services/TransactionService";
+import { AccountSelector } from "@/components/forms/AccountSelector";
+import { CurrencyInput } from "@/components/forms/CurrencyInput";
+import { Button } from "@/components/ui/button";
+import type { Transaction } from "@/types/entities";
 
 interface TransferFormProps {
-  onSaved: (transaction: Transaction) => void
+  onSaved: (transaction: Transaction) => void;
 }
 
 export function TransferForm({ onSaved }: TransferFormProps) {
-  const [fromAccountId, setFromAccountId] = useState<string | null>(null)
-  const [toAccountId, setToAccountId] = useState<string | null>(null)
-  const [amount, setAmount] = useState<number | null>(null)
-  const [description, setDescription] = useState('')
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [fromAccountId, setFromAccountId] = useState<string | null>(null);
+  const [toAccountId, setToAccountId] = useState<string | null>(null);
+  const [amount, setAmount] = useState<number | null>(null);
+  const [description, setDescription] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const canSave = Boolean(fromAccountId && toAccountId && amount && amount > 0)
+  const canSave = Boolean(fromAccountId && toAccountId && amount && amount > 0);
 
   async function handleSave() {
-    if (!canSave || !fromAccountId || !toAccountId || !amount) return
-    setSaving(true)
-    setError(null)
+    if (!canSave || !fromAccountId || !toAccountId || !amount) return;
+    setSaving(true);
+    setError(null);
     try {
       const transaction = await TransactionService.createTransfer({
         fromAccountId,
@@ -31,12 +31,14 @@ export function TransferForm({ onSaved }: TransferFormProps) {
         amount,
         description: description.trim() || undefined,
         transactionDate: new Date().toISOString(),
-      })
-      onSaved(transaction)
+      });
+      onSaved(transaction);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not save this transfer.')
+      setError(
+        e instanceof Error ? e.message : "Could not save this transfer.",
+      );
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
   }
 
@@ -54,7 +56,10 @@ export function TransferForm({ onSaved }: TransferFormProps) {
         />
       </div>
 
-      <div className="flex justify-center text-text-tertiary" aria-hidden="true">
+      <div
+        className="flex justify-center text-text-tertiary"
+        aria-hidden="true"
+      >
         <ArrowDown className="size-16" />
       </div>
 
@@ -78,9 +83,15 @@ export function TransferForm({ onSaved }: TransferFormProps) {
 
       {error && <p className="text-body-sm text-expense">{error}</p>}
 
-      <Button variant="primary" size="lg" onClick={handleSave} disabled={!canSave} loading={saving}>
+      <Button
+        variant="primary"
+        size="lg"
+        onClick={handleSave}
+        disabled={!canSave}
+        loading={saving}
+      >
         Transfer
       </Button>
     </div>
-  )
+  );
 }

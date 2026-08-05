@@ -1,64 +1,74 @@
-import { useEffect, useMemo, useState } from 'react'
-import { PiggyBank, Plus } from 'lucide-react'
-import { useBudgetsStore } from './budgetsStore'
-import { useTransactionsStore } from '@/features/transactions/transactionsStore'
-import { useSettingsStore } from '@/app/settingsStore'
-import { BudgetService, computeBudgetStatus, type BudgetStatus } from '@/services/BudgetService'
-import { BudgetCard } from '@/components/finance/BudgetCard'
-import { BudgetForm } from './BudgetForm'
-import { BottomSheet } from '@/components/layout/BottomSheet'
-import { ConfirmationDialog } from '@/components/common/ConfirmationDialog'
-import { EmptyState } from '@/components/common/EmptyState'
-import { Button } from '@/components/ui/button'
-import { db } from '@/database/db'
-import type { Budget, Category } from '@/types/entities'
+import { useEffect, useMemo, useState } from "react";
+import { PiggyBank, Plus } from "lucide-react";
+import { useBudgetsStore } from "./budgetsStore";
+import { useTransactionsStore } from "@/features/transactions/transactionsStore";
+import { useSettingsStore } from "@/app/settingsStore";
+import {
+  BudgetService,
+  computeBudgetStatus,
+  type BudgetStatus,
+} from "@/services/BudgetService";
+import { BudgetCard } from "@/components/finance/BudgetCard";
+import { BudgetForm } from "./BudgetForm";
+import { BottomSheet } from "@/components/layout/BottomSheet";
+import { ConfirmationDialog } from "@/components/common/ConfirmationDialog";
+import { EmptyState } from "@/components/common/EmptyState";
+import { Button } from "@/components/ui/button";
+import { db } from "@/database/db";
+import type { Budget, Category } from "@/types/entities";
 
 export function BudgetsPage() {
-  const budgets = useBudgetsStore((s) => s.budgets)
-  const loadBudgets = useBudgetsStore((s) => s.load)
-  const transactions = useTransactionsStore((s) => s.transactions)
-  const loadTransactions = useTransactionsStore((s) => s.load)
-  const settings = useSettingsStore((s) => s.settings)
+  const budgets = useBudgetsStore((s) => s.budgets);
+  const loadBudgets = useBudgetsStore((s) => s.load);
+  const transactions = useTransactionsStore((s) => s.transactions);
+  const loadTransactions = useTransactionsStore((s) => s.load);
+  const settings = useSettingsStore((s) => s.settings);
 
-  const [categories, setCategories] = useState<Category[]>([])
-  const [sheetOpen, setSheetOpen] = useState(false)
-  const [editing, setEditing] = useState<Budget | undefined>(undefined)
-  const [confirmingDelete, setConfirmingDelete] = useState<Budget | null>(null)
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [editing, setEditing] = useState<Budget | undefined>(undefined);
+  const [confirmingDelete, setConfirmingDelete] = useState<Budget | null>(null);
 
   useEffect(() => {
-    loadBudgets()
-    loadTransactions()
-    db.categories.toArray().then(setCategories)
-  }, [loadBudgets, loadTransactions])
+    loadBudgets();
+    loadTransactions();
+    db.categories.toArray().then(setCategories);
+  }, [loadBudgets, loadTransactions]);
 
-  const categoryById = useMemo(() => new Map(categories.map((c) => [c.id, c])), [categories])
-  const budgetMonthStart = settings?.budgetMonthStart ?? 1
+  const categoryById = useMemo(
+    () => new Map(categories.map((c) => [c.id, c])),
+    [categories],
+  );
+  const budgetMonthStart = settings?.budgetMonthStart ?? 1;
 
   const statuses: BudgetStatus[] = useMemo(
-    () => budgets.map((b) => computeBudgetStatus(b, transactions, budgetMonthStart)),
-    [budgets, transactions, budgetMonthStart]
-  )
+    () =>
+      budgets.map((b) =>
+        computeBudgetStatus(b, transactions, budgetMonthStart),
+      ),
+    [budgets, transactions, budgetMonthStart],
+  );
 
   function openAdd() {
-    setEditing(undefined)
-    setSheetOpen(true)
+    setEditing(undefined);
+    setSheetOpen(true);
   }
 
   function openEdit(budget: Budget) {
-    setEditing(budget)
-    setSheetOpen(true)
+    setEditing(budget);
+    setSheetOpen(true);
   }
 
   function handleSaved() {
-    setSheetOpen(false)
-    loadBudgets()
+    setSheetOpen(false);
+    loadBudgets();
   }
 
   async function handleDelete() {
-    if (!confirmingDelete) return
-    await BudgetService.deactivate(confirmingDelete.id)
-    setConfirmingDelete(null)
-    loadBudgets()
+    if (!confirmingDelete) return;
+    await BudgetService.deactivate(confirmingDelete.id);
+    setConfirmingDelete(null);
+    loadBudgets();
   }
 
   if (budgets.length === 0) {
@@ -71,11 +81,18 @@ export function BudgetsPage() {
           actionLabel="Create a budget"
           onAction={openAdd}
         />
-        <BottomSheet open={sheetOpen} onClose={() => setSheetOpen(false)} title="New Budget">
-          <BudgetForm onSaved={handleSaved} onCancel={() => setSheetOpen(false)} />
+        <BottomSheet
+          open={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          title="New Budget"
+        >
+          <BudgetForm
+            onSaved={handleSaved}
+            onCancel={() => setSheetOpen(false)}
+          />
         </BottomSheet>
       </>
-    )
+    );
   }
 
   return (
@@ -102,15 +119,19 @@ export function BudgetsPage() {
       <BottomSheet
         open={sheetOpen}
         onClose={() => setSheetOpen(false)}
-        title={editing ? 'Edit Budget' : 'New Budget'}
+        title={editing ? "Edit Budget" : "New Budget"}
       >
-        <BudgetForm editing={editing} onSaved={handleSaved} onCancel={() => setSheetOpen(false)} />
+        <BudgetForm
+          editing={editing}
+          onSaved={handleSaved}
+          onCancel={() => setSheetOpen(false)}
+        />
         {editing && (
           <button
             type="button"
             onClick={() => {
-              setSheetOpen(false)
-              setConfirmingDelete(editing)
+              setSheetOpen(false);
+              setConfirmingDelete(editing);
             }}
             className="mt-16 w-full text-center text-body-sm text-expense"
           >
@@ -128,5 +149,5 @@ export function BudgetsPage() {
         onCancel={() => setConfirmingDelete(null)}
       />
     </div>
-  )
+  );
 }

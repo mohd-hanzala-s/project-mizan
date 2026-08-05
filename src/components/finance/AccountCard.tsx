@@ -1,13 +1,13 @@
-import type { Account } from '@/types/entities'
-import { DynamicIcon } from '@/components/common/DynamicIcon'
-import { cn } from '@/utils/cn'
+import type { Account } from "@/types/entities";
+import { DynamicIcon } from "@/components/common/DynamicIcon";
+import { cn } from "@/utils/cn";
 
 interface AccountCardProps {
-  account: Account
+  account: Account;
 }
 
 export function AccountCard({ account }: AccountCardProps) {
-  const isNegative = account.currentBalance < 0
+  const isNegative = account.currentBalance < 0;
 
   return (
     <div className="flex min-h-touch items-center gap-12 rounded-md border border-border bg-surface-card px-16 py-12">
@@ -22,12 +22,13 @@ export function AccountCard({ account }: AccountCardProps) {
       </span>
       <span
         className={cn(
-          'shrink-0 tabular-nums text-body-lg font-semibold',
-          isNegative ? 'text-expense' : 'text-text-primary'
+          "shrink-0 tabular-nums text-body-lg font-semibold",
+          isNegative ? "text-expense" : "text-text-primary",
         )}
       >
-        {isNegative ? '−' : ''}₹{Math.abs(account.currentBalance).toLocaleString('en-IN')}
+        {isNegative ? "−" : ""}₹
+        {Math.abs(account.currentBalance).toLocaleString("en-IN")}
       </span>
     </div>
-  )
+  );
 }

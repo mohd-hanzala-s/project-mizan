@@ -1,17 +1,17 @@
-import { NavLink } from 'react-router-dom'
-import { X } from 'lucide-react'
-import { NAV_ITEMS } from '@/constants/navigation'
-import { cn } from '@/utils/cn'
+import { NavLink } from "react-router-dom";
+import { X } from "lucide-react";
+import { NAV_ITEMS } from "@/constants/navigation";
+import { cn } from "@/utils/cn";
 
 interface MoreSheetProps {
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
 }
 
 export function MoreSheet({ open, onClose }: MoreSheetProps) {
-  const remainingItems = NAV_ITEMS.filter((item) => !item.primary)
+  const remainingItems = NAV_ITEMS.filter((item) => !item.primary);
 
-  if (!open) return null
+  if (!open) return null;
 
   return (
     <div
@@ -20,10 +20,14 @@ export function MoreSheet({ open, onClose }: MoreSheetProps) {
       aria-modal="true"
       aria-label="More destinations"
     >
-      <button aria-label="Close" onClick={onClose} className="absolute inset-0 bg-black/40" />
+      <button
+        aria-label="Close"
+        onClick={onClose}
+        className="absolute inset-0 bg-black/40"
+      />
       <div
         className="absolute inset-x-0 bottom-0 rounded-t-xl bg-surface-card p-24 shadow-floating"
-        style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom))' }}
+        style={{ paddingBottom: "calc(24px + env(safe-area-inset-bottom))" }}
       >
         <div className="mb-16 flex items-center justify-between">
           <h2 className="text-h3 text-text-primary">More</h2>
@@ -43,10 +47,10 @@ export function MoreSheet({ open, onClose }: MoreSheetProps) {
               onClick={onClose}
               className={({ isActive }) =>
                 cn(
-                  'flex min-h-touch flex-col items-center gap-8 rounded-md p-12 text-body-sm font-medium',
+                  "flex min-h-touch flex-col items-center gap-8 rounded-md p-12 text-body-sm font-medium",
                   isActive
-                    ? 'text-income'
-                    : 'text-text-secondary hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                    ? "text-income"
+                    : "text-text-secondary hover:bg-neutral-100 dark:hover:bg-neutral-800",
                 )
               }
             >
@@ -57,5 +61,5 @@ export function MoreSheet({ open, onClose }: MoreSheetProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

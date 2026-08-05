@@ -1,25 +1,25 @@
-import { AccountRepository } from '@/repositories/AccountRepository'
-import type { Account, AccountType } from '@/types/entities'
+import { AccountRepository } from "@/repositories/AccountRepository";
+import type { Account, AccountType } from "@/types/entities";
 
 export interface CreateAccountInput {
-  name: string
-  type: AccountType
-  icon: string
-  color: string
-  openingBalance: number
+  name: string;
+  type: AccountType;
+  icon: string;
+  color: string;
+  openingBalance: number;
 }
 
 export interface UpdateAccountInput {
-  name: string
-  icon: string
-  color: string
+  name: string;
+  icon: string;
+  color: string;
 }
 
 export const AccountService = {
   async create(input: CreateAccountInput): Promise<Account> {
-    if (!input.name.trim()) throw new Error('Account name is required.')
+    if (!input.name.trim()) throw new Error("Account name is required.");
 
-    const now = new Date().toISOString()
+    const now = new Date().toISOString();
     const account: Account = {
       id: crypto.randomUUID(),
       name: input.name.trim(),
@@ -32,9 +32,9 @@ export const AccountService = {
       isArchived: false,
       createdAt: now,
       updatedAt: now,
-    }
-    await AccountRepository.add(account)
-    return account
+    };
+    await AccountRepository.add(account);
+    return account;
   },
 
   /** Name/icon/color only — type and openingBalance are fixed after
@@ -45,12 +45,12 @@ export const AccountService = {
    * which isn't worth the complexity for what's meant to be a one-time
    * starting point. */
   async update(id: string, input: UpdateAccountInput): Promise<void> {
-    if (!input.name.trim()) throw new Error('Account name is required.')
+    if (!input.name.trim()) throw new Error("Account name is required.");
     await AccountRepository.update(id, {
       name: input.name.trim(),
       icon: input.icon,
       color: input.color,
-    })
+    });
   },
 
   /** Archiving is reversible (unarchive), so it doesn't need the same
@@ -58,14 +58,14 @@ export const AccountService = {
    * this is the last active account, since Smart Entry would have nowhere
    * to post a new transaction to. */
   async archive(id: string): Promise<void> {
-    const active = await AccountRepository.getAll()
+    const active = await AccountRepository.getAll();
     if (active.length <= 1 && active.some((a) => a.id === id)) {
-      throw new Error('You need at least one active account.')
+      throw new Error("You need at least one active account.");
     }
-    await AccountRepository.update(id, { isArchived: true })
+    await AccountRepository.update(id, { isArchived: true });
   },
 
   async unarchive(id: string): Promise<void> {
-    await AccountRepository.update(id, { isArchived: false })
+    await AccountRepository.update(id, { isArchived: false });
   },
-}
+};

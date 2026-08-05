@@ -15,16 +15,16 @@
   <head>
     <meta charset="utf-8" />
     <script>
-      var segmentsToKeep = 1
-      var l = window.location
-      var path = l.pathname.split('/').slice(0, 1 + segmentsToKeep).join('/')
-      var rest = l.pathname.slice(path.length)
+      var segmentsToKeep = 1;
+      var l = window.location;
+      var path = l.pathname
+        .split("/")
+        .slice(0, 1 + segmentsToKeep)
+        .join("/");
+      var rest = l.pathname.slice(path.length);
       l.replace(
-        path +
-          '/?redirect=' +
-          encodeURIComponent(rest + l.search) +
-          l.hash
-      )
+        path + "/?redirect=" + encodeURIComponent(rest + l.search) + l.hash,
+      );
     </script>
   </head>
   <body></body>

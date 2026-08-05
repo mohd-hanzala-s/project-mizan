@@ -1,52 +1,55 @@
-import { useState } from 'react'
-import { LoanService } from '@/services/LoanService'
-import type { Loan } from '@/types/entities'
-import { CurrencyInput } from '@/components/forms/CurrencyInput'
-import { Button } from '@/components/ui/button'
+import { useState } from "react";
+import { LoanService } from "@/services/LoanService";
+import type { Loan } from "@/types/entities";
+import { CurrencyInput } from "@/components/forms/CurrencyInput";
+import { Button } from "@/components/ui/button";
 
 interface PaymentFormProps {
-  loan: Loan
-  onSaved: () => void
-  onCancel: () => void
+  loan: Loan;
+  onSaved: () => void;
+  onCancel: () => void;
 }
 
 function today(): string {
-  const d = new Date()
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
 export function PaymentForm({ loan, onSaved, onCancel }: PaymentFormProps) {
-  const [paymentDate, setPaymentDate] = useState(today())
-  const [amountPaid, setAmountPaid] = useState<number | null>(null)
-  const [notes, setNotes] = useState('')
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [paymentDate, setPaymentDate] = useState(today());
+  const [amountPaid, setAmountPaid] = useState<number | null>(null);
+  const [notes, setNotes] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const canSave = Boolean(paymentDate && amountPaid && amountPaid > 0)
+  const canSave = Boolean(paymentDate && amountPaid && amountPaid > 0);
 
   async function handleSave() {
-    if (!canSave || !amountPaid) return
-    setSaving(true)
-    setError(null)
+    if (!canSave || !amountPaid) return;
+    setSaving(true);
+    setError(null);
     try {
       await LoanService.recordPayment(loan.id, {
         paymentDate,
         amountPaid,
         notes,
-      })
-      onSaved()
+      });
+      onSaved();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not record this payment.')
+      setError(
+        e instanceof Error ? e.message : "Could not record this payment.",
+      );
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
   }
 
   return (
     <div className="flex flex-col gap-24">
       <p className="text-body-sm text-text-secondary">
-        Recording a payment for <span className="font-medium text-text-primary">{loan.loanName}</span>{' '}
+        Recording a payment for{" "}
+        <span className="font-medium text-text-primary">{loan.loanName}</span>{" "}
         reduces its outstanding balance and updates the payoff forecast.
       </p>
 
@@ -66,12 +69,14 @@ export function PaymentForm({ loan, onSaved, onCancel }: PaymentFormProps) {
         <span className="text-overline text-text-tertiary">Amount paid</span>
         <CurrencyInput value={amountPaid} onChange={setAmountPaid} />
         <span className="text-caption text-text-tertiary">
-          Outstanding balance is ₹{loan.currentBalance.toLocaleString('en-IN')}.
+          Outstanding balance is ₹{loan.currentBalance.toLocaleString("en-IN")}.
         </span>
       </div>
 
       <div className="flex flex-col gap-8">
-        <span className="text-overline text-text-tertiary">Notes (optional)</span>
+        <span className="text-overline text-text-tertiary">
+          Notes (optional)
+        </span>
         <input
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
@@ -98,5 +103,5 @@ export function PaymentForm({ loan, onSaved, onCancel }: PaymentFormProps) {
         </Button>
       </div>
     </div>
-  )
+  );
 }

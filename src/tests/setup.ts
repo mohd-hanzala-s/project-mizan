@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom/vitest'
-import 'fake-indexeddb/auto'
+import "@testing-library/jest-dom/vitest";
+import "fake-indexeddb/auto";
 
 if (!window.matchMedia) {
   window.matchMedia = ((query: string) => ({
@@ -11,5 +11,5 @@ if (!window.matchMedia) {
     addEventListener: () => {},
     removeEventListener: () => {},
     dispatchEvent: () => false,
-  })) as unknown as typeof window.matchMedia
+  })) as unknown as typeof window.matchMedia;
 }

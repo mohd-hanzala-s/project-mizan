@@ -1,25 +1,25 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Receipt } from 'lucide-react'
-import { useTransactionsStore } from './transactionsStore'
-import { TransactionCard } from './TransactionCard'
-import { SearchBar } from '@/components/forms/SearchBar'
-import { FilterBar, type TypeFilter } from '@/components/forms/FilterBar'
-import { EmptyState } from '@/components/common/EmptyState'
-import { db } from '@/database/db'
-import { isTransferCreditLeg } from '@/utils/transactions'
-import type { Account, Category, Transaction } from '@/types/entities'
+import { useEffect, useMemo, useState } from "react";
+import { Receipt } from "lucide-react";
+import { useTransactionsStore } from "./transactionsStore";
+import { TransactionCard } from "./TransactionCard";
+import { SearchBar } from "@/components/forms/SearchBar";
+import { FilterBar, type TypeFilter } from "@/components/forms/FilterBar";
+import { EmptyState } from "@/components/common/EmptyState";
+import { db } from "@/database/db";
+import { isTransferCreditLeg } from "@/utils/transactions";
+import type { Account, Category, Transaction } from "@/types/entities";
 
 function groupByDate(transactions: Transaction[]): [string, Transaction[]][] {
-  const groups = new Map<string, Transaction[]>()
+  const groups = new Map<string, Transaction[]>();
   for (const t of transactions) {
-    const key = new Date(t.transactionDate).toLocaleDateString('en-IN', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-    })
-    groups.set(key, [...(groups.get(key) ?? []), t])
+    const key = new Date(t.transactionDate).toLocaleDateString("en-IN", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+    groups.set(key, [...(groups.get(key) ?? []), t]);
   }
-  return [...groups.entries()]
+  return [...groups.entries()];
 }
 
 /** §6 broad search: description, amount, category name, account name,
@@ -28,9 +28,9 @@ function matchesSearch(
   t: Transaction,
   query: string,
   category: Category | undefined,
-  account: Account | undefined
+  account: Account | undefined,
 ): boolean {
-  if (!query) return true
+  if (!query) return true;
   const haystack = [
     t.description,
     t.notes,
@@ -40,40 +40,50 @@ function matchesSearch(
     ...t.tags,
   ]
     .filter(Boolean)
-    .join(' ')
-    .toLowerCase()
-  return haystack.includes(query.toLowerCase())
+    .join(" ")
+    .toLowerCase();
+  return haystack.includes(query.toLowerCase());
 }
 
 export function TransactionsPage() {
-  const transactions = useTransactionsStore((s) => s.transactions)
-  const isLoading = useTransactionsStore((s) => s.isLoading)
-  const load = useTransactionsStore((s) => s.load)
-  const openAddSheet = useTransactionsStore((s) => s.openAddSheet)
-  const openEditSheet = useTransactionsStore((s) => s.openEditSheet)
-  const deleteTransaction = useTransactionsStore((s) => s.deleteTransaction)
-  const duplicateTransaction = useTransactionsStore((s) => s.duplicateTransaction)
+  const transactions = useTransactionsStore((s) => s.transactions);
+  const isLoading = useTransactionsStore((s) => s.isLoading);
+  const load = useTransactionsStore((s) => s.load);
+  const openAddSheet = useTransactionsStore((s) => s.openAddSheet);
+  const openEditSheet = useTransactionsStore((s) => s.openEditSheet);
+  const deleteTransaction = useTransactionsStore((s) => s.deleteTransaction);
+  const duplicateTransaction = useTransactionsStore(
+    (s) => s.duplicateTransaction,
+  );
 
-  const [categories, setCategories] = useState<Category[]>([])
-  const [accounts, setAccounts] = useState<Account[]>([])
-  const [query, setQuery] = useState('')
-  const [typeFilter, setTypeFilter] = useState<TypeFilter>('all')
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<Set<string>>(new Set())
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [query, setQuery] = useState("");
+  const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<Set<string>>(
+    new Set(),
+  );
 
   useEffect(() => {
-    load()
-    db.categories.toArray().then(setCategories)
-    db.accounts.toArray().then(setAccounts)
-  }, [load])
+    load();
+    db.categories.toArray().then(setCategories);
+    db.accounts.toArray().then(setAccounts);
+  }, [load]);
 
-  const categoryById = useMemo(() => new Map(categories.map((c) => [c.id, c])), [categories])
-  const accountById = useMemo(() => new Map(accounts.map((a) => [a.id, a])), [accounts])
+  const categoryById = useMemo(
+    () => new Map(categories.map((c) => [c.id, c])),
+    [categories],
+  );
+  const accountById = useMemo(
+    () => new Map(accounts.map((a) => [a.id, a])),
+    [accounts],
+  );
   // Not a real category choice (every transfer gets it automatically), so
   // filtering by it in the chip row wouldn't mean anything to the user.
   const filterableCategories = useMemo(
-    () => categories.filter((c) => c.id !== 'cat-transfers'),
-    [categories]
-  )
+    () => categories.filter((c) => c.id !== "cat-transfers"),
+    [categories],
+  );
 
   const filtered = useMemo(() => {
     return (
@@ -82,29 +92,43 @@ export function TransactionsPage() {
         // it in a cross-account list; the credit leg only matters when
         // viewing the destination account's own history.
         .filter((t) => !isTransferCreditLeg(t))
-        .filter((t) => (typeFilter === 'all' ? true : t.type === typeFilter))
+        .filter((t) => (typeFilter === "all" ? true : t.type === typeFilter))
         .filter((t) =>
-          selectedCategoryIds.size === 0 ? true : selectedCategoryIds.has(t.categoryId)
+          selectedCategoryIds.size === 0
+            ? true
+            : selectedCategoryIds.has(t.categoryId),
         )
         .filter((t) =>
-          matchesSearch(t, query, categoryById.get(t.categoryId), accountById.get(t.accountId))
+          matchesSearch(
+            t,
+            query,
+            categoryById.get(t.categoryId),
+            accountById.get(t.accountId),
+          ),
         )
         .sort((a, b) => b.transactionDate.localeCompare(a.transactionDate))
-    )
-  }, [transactions, typeFilter, selectedCategoryIds, query, categoryById, accountById])
+    );
+  }, [
+    transactions,
+    typeFilter,
+    selectedCategoryIds,
+    query,
+    categoryById,
+    accountById,
+  ]);
 
-  const grouped = useMemo(() => groupByDate(filtered), [filtered])
+  const grouped = useMemo(() => groupByDate(filtered), [filtered]);
 
   function toggleCategory(categoryId: string) {
     setSelectedCategoryIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(categoryId)) next.delete(categoryId)
-      else next.add(categoryId)
-      return next
-    })
+      const next = new Set(prev);
+      if (next.has(categoryId)) next.delete(categoryId);
+      else next.add(categoryId);
+      return next;
+    });
   }
 
-  if (isLoading) return null
+  if (isLoading) return null;
 
   if (transactions.length === 0) {
     return (
@@ -115,7 +139,7 @@ export function TransactionsPage() {
         actionLabel="Add a transaction"
         onAction={openAddSheet}
       />
-    )
+    );
   }
 
   return (
@@ -157,5 +181,5 @@ export function TransactionsPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router-dom'
-import { NAV_ITEMS } from '@/constants/navigation'
-import { cn } from '@/utils/cn'
+import { NavLink } from "react-router-dom";
+import { NAV_ITEMS } from "@/constants/navigation";
+import { cn } from "@/utils/cn";
 
 export function NavigationRail() {
   return (
@@ -18,14 +18,14 @@ export function NavigationRail() {
         <NavLink
           key={id}
           to={path}
-          end={path === '/'}
+          end={path === "/"}
           className={({ isActive }) =>
             cn(
-              'flex min-h-touch items-center gap-12 rounded-md px-12 text-body-sm font-medium transition-colors duration-fast',
-              'md:w-full',
+              "flex min-h-touch items-center gap-12 rounded-md px-12 text-body-sm font-medium transition-colors duration-fast",
+              "md:w-full",
               isActive
-                ? 'bg-income-subtle text-income'
-                : 'text-text-secondary hover:bg-neutral-100 hover:text-text-primary dark:hover:bg-neutral-800'
+                ? "bg-income-subtle text-income"
+                : "text-text-secondary hover:bg-neutral-100 hover:text-text-primary dark:hover:bg-neutral-800",
             )
           }
         >
@@ -34,5 +34,5 @@ export function NavigationRail() {
         </NavLink>
       ))}
     </nav>
-  )
+  );
 }

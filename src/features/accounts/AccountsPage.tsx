@@ -1,28 +1,28 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Plus, Wallet, ArchiveRestore } from 'lucide-react'
-import { useAccountsStore } from './accountsStore'
-import { AccountForm } from './AccountForm'
-import { AccountCard } from '@/components/finance/AccountCard'
-import { BottomSheet } from '@/components/layout/BottomSheet'
-import { EmptyState } from '@/components/common/EmptyState'
-import { Button } from '@/components/ui/button'
-import { AccountService } from '@/services/AccountService'
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Plus, Wallet, ArchiveRestore } from "lucide-react";
+import { useAccountsStore } from "./accountsStore";
+import { AccountForm } from "./AccountForm";
+import { AccountCard } from "@/components/finance/AccountCard";
+import { BottomSheet } from "@/components/layout/BottomSheet";
+import { EmptyState } from "@/components/common/EmptyState";
+import { Button } from "@/components/ui/button";
+import { AccountService } from "@/services/AccountService";
 
 export function AccountsPage() {
-  const accounts = useAccountsStore((s) => s.accounts)
-  const archivedAccounts = useAccountsStore((s) => s.archivedAccounts)
-  const load = useAccountsStore((s) => s.load)
-  const [addOpen, setAddOpen] = useState(false)
-  const navigate = useNavigate()
+  const accounts = useAccountsStore((s) => s.accounts);
+  const archivedAccounts = useAccountsStore((s) => s.archivedAccounts);
+  const load = useAccountsStore((s) => s.load);
+  const [addOpen, setAddOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    load()
-  }, [load])
+    load();
+  }, [load]);
 
   async function handleUnarchive(id: string) {
-    await AccountService.unarchive(id)
-    load()
+    await AccountService.unarchive(id);
+    load();
   }
 
   return (
@@ -72,22 +72,27 @@ export function AccountsPage() {
                 onClick={() => handleUnarchive(account.id)}
                 className="flex items-center gap-4 text-body-sm font-medium text-income"
               >
-                <ArchiveRestore className="size-16" aria-hidden="true" /> Restore
+                <ArchiveRestore className="size-16" aria-hidden="true" />{" "}
+                Restore
               </button>
             </div>
           ))}
         </div>
       )}
 
-      <BottomSheet open={addOpen} onClose={() => setAddOpen(false)} title="Add Account">
+      <BottomSheet
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        title="Add Account"
+      >
         <AccountForm
           onSaved={() => {
-            setAddOpen(false)
-            load()
+            setAddOpen(false);
+            load();
           }}
           onCancel={() => setAddOpen(false)}
         />
       </BottomSheet>
     </div>
-  )
+  );
 }

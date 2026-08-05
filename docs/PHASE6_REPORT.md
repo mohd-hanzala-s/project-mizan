@@ -99,7 +99,7 @@ this.version(6).stores({
 - New store **`loans`**, primary key `id`, indexed on `dueDay, status` per
   §5.
 - New store **`loan_payments`**, primary key `id`, indexed on `loanId,
-  paymentDate` per §5.
+paymentDate` per §5.
 - `status` is a string (`'active' | 'completed'`), not a boolean — the
   same IndexedDB constraint that kept booleans out of indexes in Phases
   0/1/5 does not apply here, so §5's `status` index is used as specified.
@@ -299,7 +299,7 @@ suites re-verified Phase 6's Dashboard wiring.
   design-token audit clean, typecheck clean, production build + PWA green.
 - **After Phase 6**: full suite green (150 tests, 19 files) with no unhandled
   errors; lint + design-token audit clean; typecheck clean; production build
-  + PWA clean.
+  - PWA clean.
 - **Issues found and fixed during the phase**:
   1. One `loan-page.test.tsx` assertion failed because "Active" appears both
      as the section header and the card's status pill — changed to the

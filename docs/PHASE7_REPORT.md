@@ -100,13 +100,13 @@ the existing Zustand stores.
 engine, namespace-exported as `CalendarService` (mirroring the
 service-object convention used elsewhere):
 
-| API | Purpose |
-|-----|---------|
+| API                                                                                               | Purpose                                                                                                   |
+| ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | `getMonthEvents(year, monthIndex, transactions, recurringRules, loans, loanPayments, reference?)` | All events in a calendar month, newest-first. `reference` = "today" (injected in tests, defaults to now). |
-| `getDayEvents(events, date)` | Events on one day (start-of-day compare). |
-| `getWeekEvents(events, weekStart)` | Events in a 7-day window from `weekStart`. |
-| `getDaySummary(events)` | `{ count, income, expense, net }` for a day's events. |
-| `filterEvents(events, query, kinds)` | Kind set + case-insensitive title search. Empty `kinds` = all. |
+| `getDayEvents(events, date)`                                                                      | Events on one day (start-of-day compare).                                                                 |
+| `getWeekEvents(events, weekStart)`                                                                | Events in a 7-day window from `weekStart`.                                                                |
+| `getDaySummary(events)`                                                                           | `{ count, income, expense, net }` for a day's events.                                                     |
+| `filterEvents(events, query, kinds)`                                                              | Kind set + case-insensitive title search. Empty `kinds` = all.                                            |
 
 Internal builders:
 
@@ -238,7 +238,7 @@ dashboard suites re-verified Phase 7's untouched surfaces.
   design-token audit clean, typecheck clean, production build + PWA green.
 - **After Phase 7**: full suite green (166 tests, 21 files) with no unhandled
   errors; lint + design-token audit clean; typecheck clean; production build
-  + PWA clean; live dev-server smoke test of `/calendar` returns 200.
+  - PWA clean; live dev-server smoke test of `/calendar` returns 200.
 - **Issues found and fixed during the phase**:
   1. `CalendarView` imported `getDayEvents` it never used (lint warning) —
      removed.

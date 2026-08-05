@@ -1,7 +1,7 @@
 interface DashboardCardProps {
-  title: string
-  action?: React.ReactNode
-  children: React.ReactNode
+  title: string;
+  action?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export function DashboardCard({ title, action, children }: DashboardCardProps) {
@@ -13,5 +13,5 @@ export function DashboardCard({ title, action, children }: DashboardCardProps) {
       </div>
       {children}
     </section>
-  )
+  );
 }

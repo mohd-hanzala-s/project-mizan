@@ -30,6 +30,7 @@ predict, suggest, warn, explain) · Reliability (accuracy over feature count).
 logging throughout the day · end-of-month review/export.
 
 **Golden rules**:
+
 1. Never sacrifice usability for feature count.
 2. Never ask users for information the app can infer.
 3. Every repetitive task should eventually automate.
@@ -66,6 +67,7 @@ touch-first. Never crowded, playful, or corporate.
 
 **Color system** — neutral grayscale surfaces; accent colors only carry
 meaning:
+
 - Primary/Income: Emerald 500 `#10B981`
 - Expense: Coral 500 `#F97360`
 - Warning: Amber 500 `#F59E0B`
@@ -146,6 +148,7 @@ BackupStatus · SyncStatus (future) · ImportWizard · ExportWizard ·
 OnboardingCarousel **[NEW]** · AppLockScreen **[NEW]**.
 
 **Key component behaviors**:
+
 - **AppShell**: permanent layout (nav + content + FAB + global search +
   notifications). Gated by AppLockScreen on launch if app-lock is enabled
   **[NEW]**.
@@ -182,6 +185,7 @@ documented, integrated into design system.
 service-oriented, modular, testable. No business logic inside UI components.
 
 **Stack**:
+
 - Core: React, TypeScript, Vite
 - Styling: Tailwind CSS, CSS variables, design tokens
 - UI: shadcn/ui, Lucide icons
@@ -199,6 +203,7 @@ service-oriented, modular, testable. No business logic inside UI components.
 `UI Components → Feature Modules → Business Services → Repository Layer → IndexedDB`
 
 **Folder structure**:
+
 ```
 src/
 ├── app/            ├── assets/           ├── components/
@@ -211,6 +216,7 @@ src/
 ├── utils/     ├── constants/     ├── types/     ├── theme/
 ├── workers/   ├── routes/        └── tests/
 ```
+
 (`accounts/` added to `features/` — see §5 correction.)
 
 **State management**: Zustand, one store per feature, no duplicated state,
@@ -306,6 +312,7 @@ recurringRuleId (optional) · loanId (optional) · budgetId (optional) · tags[]
 (soft delete) · version · linkedTransactionId (optional) **[CORRECTED — added
 so the two internal entries of a Transfer can be linked and displayed to the
 user as one transaction; see §6]**`.
+
 > `subcategoryId` removed **[CORRECTED]** — redundant with `Category.parentCategory`
 > hierarchy (see Category Entity below); do not model the hierarchy two ways.
 
@@ -351,6 +358,7 @@ in §7 for showing category-confidence scores, but never had a home in the
 schema until now]`.
 
 **Relationships** (corrected):
+
 - Transactions → Category: many-to-one
 - Transactions → Account: many-to-one (required) **[CORRECTED]**
 - Transactions → Loan: many-to-one (optional)
@@ -552,6 +560,7 @@ was marketing framing only, not a real information architecture. The actual
 navigation is the 10 screens in §1 (9 original + Accounts).
 
 **Roadmap**:
+
 - **v1.0**: everything in §1's scope list.
 - **v1.1**: goals, advanced filters, widget customization, improved
   forecasting, performance work.
@@ -587,6 +596,7 @@ refactors, reuse existing components, keep business logic out of UI, maintain
 offline function and tablet-first layout, keep performance ≥ previous phase.
 
 ### Phase 0 — Foundation
+
 Init project; configure Vite/React/TS/Tailwind/shadcn/Dexie/Zustand/PWA/
 ESLint/Prettier/Vitest/routing/theme provider; build AppShell, Navigation,
 design tokens, reusable layout components.
@@ -605,49 +615,60 @@ currency/theme pick, optional app-lock setup, optional "load sample data."
 Keep it fast, consistent with the product's speed ethos.
 
 ### Phase 1 — Core Transaction Engine
+
 Smart Entry, add/edit/delete/undo/duplicate, search, filters, categories,
 favorites, smart categorization, transaction history. Target: <5s average
 entry time.
 
 ### Phase 2 — Dashboard
+
 Metric cards, recent activity, account balances, budget summary, loan
 summary, alerts, timeline, Quick Add. Target: understandable in <5s.
 
 ### Phase 3 — Accounts
+
 Full account management per §5/§6 (already promoted to core, not future):
 default accounts, transfers (linked-entry model), balance calculations,
 account history.
 
 ### Phase 4 — Budgets
+
 Monthly + category budgets, forecasts, alerts, analytics, overspend
 detection.
 
 ### Phase 5 — Recurring Engine
+
 Rules, auto-generation, reminders, missed-payment detection, pause/resume/
 skip, history.
 
 ### Phase 6 — Loan Manager
+
 Loans, EMIs, outstanding balances, timeline, payment history, progress,
 payoff forecast.
 
 ### Phase 7 — Calendar & Timeline
+
 Financial calendar, timeline, daily/weekly/monthly views, financial events,
 search, filters.
 
 ### Phase 8 — Analytics
+
 Charts, category/budget/cash-flow/savings/loan analysis, heatmap, YoY
 comparison, forecast dashboard.
 
 ### Phase 9 — Intelligence
+
 Learning engine, recommendations, Financial Health Score, pattern
 recognition, duplicate/missed-expense detection, savings suggestions,
 behaviour analysis.
 
 ### Phase 10 — Reports
+
 Monthly/quarterly/yearly reports, archive, CSV/JSON export, backup/restore
 (with optional passphrase encryption per §5), print layout.
 
 ### Phase 11 — Production Hardening
+
 Performance profiling, accessibility review, offline validation, regression
 testing, bug fixing, UI consistency audit, animation review, code cleanup,
 docs review, GitHub Pages deployment validation.
@@ -676,6 +697,7 @@ P1]**) · **P2** improves experience (financial events, widget customization,
 advanced reports) · **P3** future (bank sync, OCR, AI chat, investments).
 
 Key acceptance criteria per module:
+
 - **Smart Entry**: <5s average completion; low-confidence → show category
   suggestions; amount required and >0.
 - **Transactions**: create/edit/delete/undo/duplicate/archive/search/filter/

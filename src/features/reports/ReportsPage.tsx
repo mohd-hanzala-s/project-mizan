@@ -1,5 +1,5 @@
-import { FileBarChart } from 'lucide-react'
-import { PlaceholderPage } from '@/components/common/PlaceholderPage'
+import { FileBarChart } from "lucide-react";
+import { PlaceholderPage } from "@/components/common/PlaceholderPage";
 
 export function ReportsPage() {
   return (
@@ -9,5 +9,5 @@ export function ReportsPage() {
       description="Monthly, quarterly, and yearly reports with export and backup."
       phase="Phase 10 — Reports"
     />
-  )
+  );
 }

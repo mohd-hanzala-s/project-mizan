@@ -7,5 +7,5 @@ export function LoadingScreen() {
         aria-label="Loading"
       />
     </div>
-  )
+  );
 }

@@ -1,38 +1,38 @@
-import { useEffect, useState } from 'react'
-import { Sparkles } from 'lucide-react'
-import { FavoriteRepository } from '@/repositories/FavoriteRepository'
-import { FavoriteService } from '@/services/FavoriteService'
-import { TransactionService } from '@/services/TransactionService'
-import { useTransactionsStore } from '@/features/transactions/transactionsStore'
-import type { Favorite } from '@/types/entities'
+import { useEffect, useState } from "react";
+import { Sparkles } from "lucide-react";
+import { FavoriteRepository } from "@/repositories/FavoriteRepository";
+import { FavoriteService } from "@/services/FavoriteService";
+import { TransactionService } from "@/services/TransactionService";
+import { useTransactionsStore } from "@/features/transactions/transactionsStore";
+import type { Favorite } from "@/types/entities";
 
 export function QuickAdd() {
-  const [favorites, setFavorites] = useState<Favorite[]>([])
-  const load = useTransactionsStore((s) => s.load)
-  const showUndo = useTransactionsStore((s) => s.showUndo)
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
+  const load = useTransactionsStore((s) => s.load);
+  const showUndo = useTransactionsStore((s) => s.showUndo);
 
   useEffect(() => {
-    FavoriteRepository.getAll().then((all) => setFavorites(all.slice(0, 8)))
-  }, [])
+    FavoriteRepository.getAll().then((all) => setFavorites(all.slice(0, 8)));
+  }, []);
 
   async function handleTap(favorite: Favorite) {
     const transaction = await TransactionService.create({
       amount: favorite.amount,
       description: favorite.title,
-      type: 'expense',
+      type: "expense",
       categoryId: favorite.categoryId,
-      accountId: 'acc-cash',
+      accountId: "acc-cash",
       transactionDate: new Date().toISOString(),
-    })
-    await FavoriteService.recordUsage(favorite.id)
-    load()
+    });
+    await FavoriteService.recordUsage(favorite.id);
+    load();
     showUndo(`Added "${favorite.title}"`, async () => {
-      await TransactionService.softDelete(transaction.id)
-      load()
-    })
+      await TransactionService.softDelete(transaction.id);
+      load();
+    });
   }
 
-  if (favorites.length === 0) return null
+  if (favorites.length === 0) return null;
 
   return (
     <div className="flex flex-col gap-8">
@@ -47,10 +47,10 @@ export function QuickAdd() {
             onClick={() => handleTap(f)}
             className="min-h-touch shrink-0 rounded-full border border-border bg-surface-card px-16 text-body-sm font-medium text-text-primary hover:bg-neutral-100 dark:hover:bg-neutral-800"
           >
-            {f.title} · ₹{f.amount.toLocaleString('en-IN')}
+            {f.title} · ₹{f.amount.toLocaleString("en-IN")}
           </button>
         ))}
       </div>
     </div>
-  )
+  );
 }

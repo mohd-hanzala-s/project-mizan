@@ -1,9 +1,9 @@
-import { Plus } from 'lucide-react'
-import { cn } from '@/utils/cn'
+import { Plus } from "lucide-react";
+import { cn } from "@/utils/cn";
 
 interface FabProps {
-  onClick: () => void
-  className?: string
+  onClick: () => void;
+  className?: string;
 }
 
 export function FloatingActionButton({ onClick, className }: FabProps) {
@@ -13,12 +13,12 @@ export function FloatingActionButton({ onClick, className }: FabProps) {
       onClick={onClick}
       aria-label="Add transaction"
       className={cn(
-        'flex size-64 items-center justify-center rounded-full bg-income text-white shadow-floating',
-        'transition-transform duration-fast hover:scale-105 active:scale-95',
-        className
+        "flex size-64 items-center justify-center rounded-full bg-income text-white shadow-floating",
+        "transition-transform duration-fast hover:scale-105 active:scale-95",
+        className,
       )}
     >
       <Plus className="size-24" aria-hidden="true" />
     </button>
-  )
+  );
 }
