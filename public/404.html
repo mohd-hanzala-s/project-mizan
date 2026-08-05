@@ -1,0 +1,31 @@
+<!doctype html>
+<!--
+  GitHub Pages serves this for any path it doesn't recognize as a static
+  file — which, for a client-side-routed SPA, is every deep link and every
+  hard refresh on a non-root route (e.g. /accounts). Without this, those
+  requests 404 instead of reaching React Router.
+
+  This repackages the requested path into a query string on `/`, and the
+  matching script in index.html restores it via history.replaceState before
+  React Router ever sees it. Segment count below must match the number of
+  path segments in the base path (see vite.config.ts BASE_PATH) — currently
+  1, for "/project-atlas/". Update if the base path changes.
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      var segmentsToKeep = 1
+      var l = window.location
+      var path = l.pathname.split('/').slice(0, 1 + segmentsToKeep).join('/')
+      var rest = l.pathname.slice(path.length)
+      l.replace(
+        path +
+          '/?redirect=' +
+          encodeURIComponent(rest + l.search) +
+          l.hash
+      )
+    </script>
+  </head>
+  <body></body>
+</html>
