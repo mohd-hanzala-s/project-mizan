@@ -36,8 +36,8 @@ export function AppLockStep() {
       <div className="flex flex-col gap-8">
         <h2 className="text-h1 text-text-primary">Protect your data</h2>
         <p className="max-w-[380px] text-body text-text-secondary">
-          Optional: set a PIN so only you can open Nexus Finance. You can change
-          this anytime in Settings.
+          Optional: set a PIN so only you can open Mizan. You can change this
+          anytime in Settings.
         </p>
       </div>
 

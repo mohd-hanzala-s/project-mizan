@@ -33,7 +33,7 @@ export function AppLockScreen({ storedHash, onUnlock }: AppLockScreenProps) {
       <div className="flex size-64 items-center justify-center rounded-full bg-income-subtle text-income">
         <Lock className="size-32" aria-hidden="true" />
       </div>
-      <h1 className="text-h1 text-text-primary">Nexus Finance is locked</h1>
+      <h1 className="text-h1 text-text-primary">Mizan is locked</h1>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-center gap-16"

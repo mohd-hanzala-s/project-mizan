@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSettingsStore } from "@/app/settingsStore";
 import { SettingsService } from "@/services/SettingsService";
 
-export const THEME_CACHE_KEY = "nexus-theme-cache";
+export const THEME_CACHE_KEY = "mizan-theme-cache";
 
 /**
  * Applies the resolved theme to <html class="dark">. Dexie's Settings row is

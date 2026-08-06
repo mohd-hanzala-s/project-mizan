@@ -12,7 +12,9 @@ describe("App first launch", () => {
   it("shows onboarding before the app shell on a fresh install", async () => {
     render(<App />);
     await waitFor(() => {
-      expect(screen.getByText(/welcome to nexus finance/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/welcome to mizan by mikarsh/i),
+      ).toBeInTheDocument();
     });
   });
 });

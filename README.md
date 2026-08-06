@@ -1,4 +1,4 @@
-# Nexus Finance
+# Mizan by Mikarsh
 
 Offline-first personal finance PWA. Know exactly where every rupee goes, in
 under thirty seconds. Everything stays on-device — no cloud, no account.
@@ -20,9 +20,9 @@ project's state lives in [`PROJECT_STATE.md`](PROJECT_STATE.md).
 
 ## Deploying
 
-This repo is [mohdhanzalas-dev/project-atlas](https://github.com/mohdhanzalas-dev/project-atlas).
+This repo is [mohd-hanzala-s/project-mizan](https://github.com/mohd-hanzala-s/project-mizan).
 The GitHub Pages base path in `vite.config.ts` (`VITE_BASE_PATH`) is set to
-`/project-atlas/` to match. If the repo is ever renamed or transferred,
+`/project-mizan/` to match. If the repo is ever renamed or transferred,
 update it there and as the `VITE_BASE_PATH` repository variable
 (`Settings → Secrets and variables → Actions → Variables`).
 

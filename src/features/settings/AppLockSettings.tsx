@@ -49,7 +49,7 @@ export function AppLockSettings() {
           <div>
             <p className="text-body font-medium text-text-primary">App Lock</p>
             <p className="text-body-sm text-text-secondary">
-              Require a PIN to open Nexus Finance.
+              Require a PIN to open Mizan.
             </p>
           </div>
         </div>

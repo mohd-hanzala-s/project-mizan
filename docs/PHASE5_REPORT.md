@@ -1,6 +1,6 @@
 # Phase 5 — Recurring Engine: Implementation Report
 
-Reference spec: `docs/atlas-master-spec.md` (identical to `nexus-finance-master-spec.md`)
+Reference spec: `docs/atlas-master-spec.md`
 Scope: §9 Phase 5 ("Recurring"), §6 recurring rules/transactions, §5 `RecurringRule` entity, §10 month-end transitions & edge cases.
 Companion state file: `PROJECT_STATE.md`.
 

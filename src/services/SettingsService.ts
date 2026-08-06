@@ -4,7 +4,7 @@ import type { Settings, ThemePreference } from "@/types/entities";
 /** Fixed local salt — this is a device-local app-lock PIN, not an
  * account credential; the threat model is "someone picks up my tablet,"
  * not remote brute force. Never store the raw PIN either way. */
-const PIN_SALT = "nexus-finance-app-lock-v1";
+const PIN_SALT = "mizan-app-lock-v1";
 
 async function sha256Hex(input: string): Promise<string> {
   const bytes = new TextEncoder().encode(input);

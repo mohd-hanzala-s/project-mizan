@@ -41,7 +41,7 @@ jobs:
           # §4. Set the real value as a repository variable
           # (Settings → Secrets and variables → Actions → Variables) once
           # the repo path is confirmed, then delete this fallback line.
-          VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/project-atlas/' }}
+          VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/project-mizan/' }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -73,7 +73,7 @@ jobs:
 
       - run: npm run build
         env:
-          VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/project-atlas/' }}
+          VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/project-mizan/' }}
 
       - uses: actions/configure-pages@v5
 

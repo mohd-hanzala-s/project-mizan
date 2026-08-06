@@ -27,7 +27,7 @@ describe("Dashboard with data", () => {
     });
   });
 
-  it("shows metric cards and recent activity instead of the empty state", async () => {
+  it("shows metric cards, recent activity, and the month-end forecast card", async () => {
     render(<App />);
 
     await waitFor(
@@ -41,5 +41,9 @@ describe("Dashboard with data", () => {
     expect(screen.getByText("This Month's Expense")).toBeInTheDocument();
     expect(screen.getByText("Salary")).toBeInTheDocument();
     expect(screen.getByText("Tea")).toBeInTheDocument();
+
+    expect(screen.getByText("Month-End Forecast")).toBeInTheDocument();
+    expect(screen.getByText("Projected balance")).toBeInTheDocument();
+    expect(screen.getByText(/confidence/i)).toBeInTheDocument();
   });
 });

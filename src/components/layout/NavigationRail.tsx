@@ -10,9 +10,9 @@ export function NavigationRail() {
     >
       <div className="mb-16 px-8 text-h3 text-text-primary md:px-8">
         <span className="md:hidden" aria-hidden="true">
-          N
+          M
         </span>
-        <span className="hidden md:inline">Nexus Finance</span>
+        <span className="hidden md:inline">Mizan by Mikarsh</span>
       </div>
       {NAV_ITEMS.map(({ id, label, path, icon: Icon }) => (
         <NavLink

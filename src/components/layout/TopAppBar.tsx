@@ -20,7 +20,7 @@ export function TopAppBar({ onScaffoldAction }: TopAppBarProps) {
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <h1 className="text-h3 text-text-primary">
-        {current?.label ?? "Nexus Finance"}
+        {current?.label ?? "Mizan by Mikarsh"}
       </h1>
       <div className="flex items-center gap-8">
         <button

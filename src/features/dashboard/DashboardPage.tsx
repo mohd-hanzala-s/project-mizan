@@ -28,8 +28,10 @@ import {
   getUpcomingObligations,
 } from "@/services/RecurringService";
 import { LoanService } from "@/services/LoanService";
+import { getForecast, getForecastAlerts } from "@/services/ForecastService";
 import { DashboardCard } from "@/components/finance/DashboardCard";
 import { MetricCard } from "@/components/finance/MetricCard";
+import { ForecastCard } from "@/components/finance/ForecastCard";
 import { AccountCard } from "@/components/finance/AccountCard";
 import { AlertCard } from "@/components/finance/AlertCard";
 import { BudgetCard } from "@/components/finance/BudgetCard";
@@ -118,14 +120,34 @@ export function DashboardPage() {
     () => LoanService.getAlerts(loans, loanPaymentsByLoan),
     [loans, loanPaymentsByLoan],
   );
+  const forecast = useMemo(
+    () =>
+      getForecast({
+        transactions,
+        accounts,
+        recurringRules,
+        loans,
+        budgetMonthStart,
+      }),
+    [transactions, accounts, recurringRules, loans, budgetMonthStart],
+  );
+  const forecastAlerts = useMemo(() => getForecastAlerts(forecast), [forecast]);
   const alerts = useMemo(
     () => [
       ...getAlerts(accounts),
       ...BudgetService.getAlerts(budgetStatuses, categories),
       ...recurringAlerts,
       ...loanAlerts,
+      ...forecastAlerts,
     ],
-    [accounts, budgetStatuses, categories, recurringAlerts, loanAlerts],
+    [
+      accounts,
+      budgetStatuses,
+      categories,
+      recurringAlerts,
+      loanAlerts,
+      forecastAlerts,
+    ],
   );
 
   if (transactions.length === 0) {
@@ -180,6 +202,8 @@ export function DashboardPage() {
           tone="neutral"
         />
       </div>
+
+      <ForecastCard forecast={forecast} />
 
       <QuickAdd />
 

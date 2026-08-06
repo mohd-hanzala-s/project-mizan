@@ -1,6 +1,6 @@
 # Phase 6 — Loan Manager: Implementation Report
 
-Reference spec: `docs/atlas-master-spec.md` (identical to `nexus-finance-master-spec.md`)
+Reference spec: `docs/atlas-master-spec.md`
 Scope: §9 Phase 6 ("Loan Manager"), §6 loans/EMI tracking, §5 `Loan`/`LoanPayment` entities, §3 `LoanCard` + confirmation dialogs, §10 data integrity & edge cases.
 Companion state file: `PROJECT_STATE.md`.
 

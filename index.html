@@ -11,19 +11,19 @@
     <meta name="theme-color" content="#10B981" />
     <meta
       name="description"
-      content="Nexus Finance — know exactly where every rupee goes, in under thirty seconds. Offline-first, private, no cloud dependency."
+      content="Mizan by Mikarsh — know exactly where every rupee goes, in under thirty seconds. Offline-first, private, no cloud dependency."
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Nexus" />
-    <title>Nexus Finance</title>
+    <meta name="apple-mobile-web-app-title" content="Mizan" />
+    <title>Mizan by Mikarsh</title>
     <script>
       // Pre-paint theme application (avoids a flash of the wrong theme
       // while Dexie/React are still loading). Settings in IndexedDB remain
       // the source of truth — see src/theme/ThemeProvider.tsx.
       (function () {
         try {
-          var cached = localStorage.getItem("nexus-theme-cache");
+          var cached = localStorage.getItem("mizan-theme-cache");
           var resolved =
             cached ||
             (window.matchMedia("(prefers-color-scheme: dark)").matches

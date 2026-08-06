@@ -1,6 +1,6 @@
 # Phase 7 — Calendar & Timeline: Implementation Report
 
-Reference spec: `docs/atlas-master-spec.md` (identical to `nexus-finance-master-spec.md`)
+Reference spec: `docs/atlas-master-spec.md`
 Scope: §9 Phase 7 ("Calendar & Timeline"), §3 `CalendarView` component states, §5 `Settings` (`firstDayOfWeek`, `defaultView`), §8 roadmap (user-editable "financial events" deferred to v1.2/P2), §10 data-integrity rules.
 Companion state file: `PROJECT_STATE.md`.
 

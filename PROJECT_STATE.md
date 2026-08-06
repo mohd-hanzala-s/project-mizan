@@ -1,7 +1,7 @@
 # PROJECT_STATE.md
 
-Living summary of Nexus Finance's current state. Detail for the current
-phase is in `docs/PHASE7_REPORT.md`; phase-by-phase history is in
+Living summary of Mizan by Mikarsh's current state. Detail for the current
+phase is in `docs/PHASE8_REPORT.md`; phase-by-phase history is in
 `CHANGELOG.md`; the product spec is `docs/atlas-master-spec.md`.
 
 ## Current project version
@@ -11,7 +11,7 @@ the meaningful version markers).
 
 ## Current phase
 
-**Phase 7 — Calendar & Timeline** (complete)
+**Phase 8 — Forecasts** (complete)
 
 ## Completed phases
 
@@ -25,12 +25,12 @@ the meaningful version markers).
 | 5     | Recurring               | Complete    |
 | 6     | Loans                   | Complete    |
 | 7     | Calendar & Timeline     | Complete    |
-| 8     | Forecasts               | Not started |
+| 8     | Forecasts               | Complete    |
 | 9     | Intelligence & Insights | Not started |
 
 ## Database schema version
 
-**v6** (Dexie, db name `nexus-finance`).
+**v6** (Dexie, db name `mizan`).
 
 - v1 — accounts, categories, settings
 - v2 — + transactions, favorites, tags (Phase 1)
@@ -53,6 +53,7 @@ Stores: `accounts`, `categories`, `settings`, `transactions`, `favorites`,
 | DashboardService          | `src/services/DashboardService.ts`          | metrics, timeline, alerts, recents                                            |
 | DuplicateDetectionService | `src/services/DuplicateDetectionService.ts` | 1-day duplicate detection                                                     |
 | FavoriteService           | `src/services/FavoriteService.ts`           | favorite ↔ quick-entry templates                                              |
+| ForecastService           | `src/services/ForecastService.ts`           | **month-end forecast, obligations, expected savings/balance, confidence**     |
 | LoanService               | `src/services/LoanService.ts`               | **loan CRUD, EMI schedule math, payoff forecast, payment split, loan alerts** |
 | RecurringService          | `src/services/RecurringService.ts`          | **schedule math, lifecycle, generateDue, alerts/obligations**                 |
 | SampleDataService         | `src/services/SampleDataService.ts`         | sample-data seeding (Phase 0 flag)                                            |
@@ -78,7 +79,7 @@ Stores: `accounts`, `categories`, `settings`, `transactions`, `favorites`,
 - Layout: `AppShell`, `NavigationRail`, `BottomNavigation`, `TopAppBar`,
   `FloatingActionButton`, `MoreSheet`, `BottomSheet`
 - Finance: `AccountCard`, `AlertCard`, `BudgetCard`, `CalendarEventRow`,
-  `DashboardCard`, `LoanCard`, `MetricCard`, `RecurringCard`
+  `DashboardCard`, `ForecastCard`, `LoanCard`, `MetricCard`, `RecurringCard`
 - Calendar: `CalendarView`, `WeekStrip`
 - Charts: `TrendIndicator`
 - Forms: `AccountSelector`, `CategorySelector`, `CurrencyInput`, `FilterBar`,
@@ -89,33 +90,33 @@ Stores: `accounts`, `categories`, `settings`, `transactions`, `favorites`,
 
 ## Routes
 
-| Path            | Screen                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------ |
-| `/`             | Dashboard (metric cards, timeline, recents, Upcoming Payments, balances, budgets, loans summary) |
-| `/transactions` | Transactions (search/filter/group, swipe gestures)                                               |
-| `/accounts`     | Accounts list + archived section                                                                 |
-| `/accounts/:id` | Account detail / history                                                                         |
-| `/budgets`      | Budgets (real)                                                                                   |
-| `/loans`        | Loans: active + completed, EMI payments, payoff forecast (real, Phase 6)                         |
-| `/recurring`    | Recurring rules + generated history (real, Phase 5)                                              |
-| `/calendar`     | Calendar & timeline: month/week/day views, search, kind filters (real, Phase 7)                  |
-| `/reports`      | Placeholder                                                                                      |
-| `/insights`     | Placeholder                                                                                      |
-| `/settings`     | Settings (theme, app lock)                                                                       |
+| Path            | Screen                                                                                                                    |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `/`             | Dashboard (metric cards, Month-End Forecast card, timeline, recents, Upcoming Payments, balances, budgets, loans summary) |
+| `/transactions` | Transactions (search/filter/group, swipe gestures)                                                                        |
+| `/accounts`     | Accounts list + archived section                                                                                          |
+| `/accounts/:id` | Account detail / history                                                                                                  |
+| `/budgets`      | Budgets (real)                                                                                                            |
+| `/loans`        | Loans: active + completed, EMI payments, payoff forecast (real, Phase 6)                                                  |
+| `/recurring`    | Recurring rules + generated history (real, Phase 5)                                                                       |
+| `/calendar`     | Calendar & timeline: month/week/day views, search, kind filters (real, Phase 7)                                           |
+| `/reports`      | Placeholder                                                                                                               |
+| `/insights`     | Placeholder                                                                                                               |
+| `/settings`     | Settings (theme, app lock)                                                                                                |
 
 ## Test count
 
-**166 tests across 21 files** (all passing):
+**186 tests across 22 files** (all passing):
 
 - account-service (6), app (1), app-shell (1), budget-service (12),
   calendar-page (3), calendar-service (13), categorization-service (4),
   dashboard-populated (1), dashboard-service (13), database (3),
-  duplicate-detection (5), loan-page (3), loan-service (30),
-  recurring-page (2), recurring-service (28), sample-data (3),
-  settings-service (4), smart-entry-parser (8), transaction-service (8),
-  transaction-status (9), transfer (9).
+  duplicate-detection (5), forecast-service (20), loan-page (3),
+  loan-service (30), recurring-page (2), recurring-service (28),
+  sample-data (3), settings-service (4), smart-entry-parser (8),
+  transaction-service (8), transaction-status (9), transfer (9).
 
-Phase 7 added 16 tests (calendar-service 13, calendar-page 3).
+Phase 8 added 20 tests (forecast-service 20).
 
 ## Current technical debt
 
@@ -136,6 +137,9 @@ Phase 7 added 16 tests (calendar-service 13, calendar-page 3).
 8. The whole calendar timeline is derived on render from three stores (no
    persisted events) — fine at this scale, revisit when §8's v1.2 event
    entity lands.
+9. The forecast's run-rate is a naive linear pace (paid ordinary spend per
+   elapsed day × remaining days) — §6 mentions "historical averages"; a
+   hybrid that weights the previous period would smooth volatile first weeks.
 
 ## Known limitations
 
@@ -151,10 +155,18 @@ Phase 7 added 16 tests (calendar-service 13, calendar-page 3).
   transactions, recurring rules, and loans only (§8 defers an event entity).
 - Calendar navigation is prev/next/Today; no drag-and-drop or day
   long-press rescheduling.
+- Forecast obligations and run-rate assume payments are made on schedule;
+  missed/overdue items are surfaced by the recurring and loan alerts rather
+  than the forecast itself.
+- Forecast confidence is based on observed trend alone (a day-2 forecast of
+  a known rent bill is still "low").
 - No visual/manual browser QA in this sandbox (build/lint/typecheck + render
   tests + design-token audit substitute).
 - INR-first; no multi-currency amounts.
 
 ## Next planned phase
 
-**Phase 8 — Forecasts** (§9).
+**Phase 9 — Intelligence & Insights** (§9). Note: the spec labels Phase 8
+"Analytics"; this project's roadmap split off the §6 Forecasts capability
+(now complete) and defers the wider analytics (charts, heatmap, YoY) to a
+later phase alongside Phase 9.

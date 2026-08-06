@@ -22,7 +22,7 @@ export function WelcomeStep() {
     <div className="flex flex-col items-center gap-32 text-center">
       <div className="flex flex-col gap-8">
         <h1 className="text-display text-text-primary">
-          Welcome to Nexus Finance
+          Welcome to Mizan by Mikarsh
         </h1>
         <p className="max-w-[420px] text-body-lg text-text-secondary">
           Know exactly where every rupee goes, in under thirty seconds.

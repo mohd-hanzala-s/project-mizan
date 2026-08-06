@@ -3,6 +3,92 @@
 All notable changes to this project are documented here, grouped by phase
 (see `docs/atlas-master-spec.md` §9 for phase definitions).
 
+## Phase 8 — Forecasts
+
+### Added
+
+- `ForecastService` — a pure, derived month-end projection built from data
+  the app already owns (accounts, transactions, recurring rules, loans).
+  Nothing is persisted: like the alert feeds and `CalendarService` before it,
+  the forecast is recomputed on demand each render (no forecast table exists
+  in the schema).
+  - `getForecast({ transactions, accounts, recurringRules, loans,
+budgetMonthStart, reference? })` → a complete `Forecast`:
+    - **Period shape** — the current budget period (`getCurrentPeriod`),
+      `daysInPeriod` / `daysElapsed` / `remainingDays`.
+    - **Actuals** — paid income/expense inside the period (matches
+      `DashboardService.computeMetrics`).
+    - **Future cashflows** — the union of three mutually exclusive
+      obligation sets (unpaid pending transactions dated on/after today,
+      active auto-generating recurring-rule occurrences, loan EMIs due from
+      today through the period end), plus a **run-rate** extrapolation
+      (paid ordinary spend-per-day-so-far × remaining days — the same shape
+      as §6's budget "current pace × remaining days").
+    - **Month-end totals** — `monthEndIncome` / `monthEndExpense`,
+      `expectedSavings` (income − expense), `expectedBalance` (current
+      account balance + projected net).
+    - **Confidence** — `high` / `medium` / `low` with an explicit
+      `confidenceReason`, per §6 "state explicitly when confidence is low"
+      (no activity yet, or fewer than 3 elapsed days → low).
+  - `getForecastAlerts(forecast)` — derived warnings for a **negative
+    projected balance** (spec §6's critical priority list) and a projected
+    overspend, merged into the Dashboard's existing alert feed.
+- `ForecastCard` (§3 Financial component) — a "Month-End Forecast"
+  Dashboard card showing projected balance / expected savings / days left,
+  expected income & expense, the top 4 upcoming obligations (pending /
+  recurring / loan, with dates and signed amounts), and the confidence pill
+  - reason.
+- Dashboard integration: the card sits between the metric grid and Quick Add;
+  forecast alerts join the `getAlerts` feed.
+- `.gitignore` now includes `dist/` (a build artifact that was being picked
+  up by `prettier --check` and `git status`; CI builds fresh so nothing
+  depends on it being tracked).
+- 20 new tests: `forecast-service.test.ts` (20) covering period shape,
+  projection math (mid-month period bounds), confidence bands, obligation
+  sources and the double-count guards, run-rate hygiene (transfers / unpaid /
+  recurring-generated excluded), and forecast alerts; the existing
+  `dashboard-populated` render test now also asserts the new card renders on
+  a populated Dashboard.
+
+### Decisions & deviations from the spec
+
+- **Phase 8 = "Forecasts" per `PROJECT_STATE.md`'s roadmap, not the spec's
+  §9 "Analytics" bullet.** §9's Phase 8 is labelled "Analytics" (charts,
+  heatmap, YoY, forecast dashboard); the project's own roadmap and Phase 7
+  report recommended "Forecasts". Implemented the §6 Forecasts capability in
+  full — month-end spending, expected balance, upcoming obligations,
+  expected savings, explicit low-confidence — which is the "forecast
+  dashboard" piece of the Analytics bullet. The wider analytics (category /
+  cash-flow / savings charts, heatmap, YoY) remains for a future phase.
+- **No new persisted entity — the forecast is a projection.** Same precedent
+  as the alert feeds and `CalendarService`; schema stays **v6**.
+- **Each scheduled occurrence is counted exactly once.** An auto-generated
+  pending row for a still-active rule is dropped in favour of its projected
+  schedule entry; remind-only rules (`autoGenerate: false`) project nothing
+  because their hand-entered payments already appear as ordinary spend in
+  the run-rate. Paused rules generate no obligations, but their lingering
+  auto pending rows are kept (nothing else projects them).
+- **Run-rate counts paid, ordinary, non-recurring-generated activity only**,
+  so unpaid entries and the projected schedule never leak into the trend and
+  double-count a rupee.
+- **Confidence is purely about observed trend**, not about the obligation
+  set — a day-2 forecast of a known rent bill is still "low" because the
+  run-rate has nothing to lean on.
+- **`dist/` gitignore** is a small repo-hygiene fix, not a spec item.
+
+### Known gaps intentionally deferred
+
+- Same visual/manual QA caveat as every previous phase — the ForecastCard
+  layout and its low-confidence state deserve a hands-on pass.
+- The run-rate is a naive linear pace (no smoothing against the previous
+  month's history); §6 mentions "historical averages" — a hybrid
+  (previous-period weighting) is a natural later refinement.
+- No line/area chart of the projected balance across the remaining days
+  (Phase 9/analytics work), and no per-category forecast.
+- Loan projections assume the standard EMI is paid on time; the interplay
+  between an overdue loan and the projected balance is left to the loan
+  alerts.
+
 ## Phase 7 — Calendar & Timeline
 
 ### Added

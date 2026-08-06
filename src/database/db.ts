@@ -25,7 +25,7 @@ import {
  * own convention; it diffs against the previous version automatically). See
  * CHANGELOG.md for the store(s) each version added.
  */
-class NexusFinanceDB extends Dexie {
+class MizanDB extends Dexie {
   accounts!: EntityTable<Account, "id">;
   categories!: EntityTable<Category, "id">;
   settings!: EntityTable<Settings, "id">;
@@ -38,7 +38,7 @@ class NexusFinanceDB extends Dexie {
   loan_payments!: EntityTable<LoanPayment, "id">;
 
   constructor() {
-    super("nexus-finance");
+    super("mizan");
 
     // §5 lists `isArchived` as an index on Account, but IndexedDB doesn't
     // accept `boolean` as a valid key type — Dexie would throw a DataError
@@ -138,4 +138,4 @@ class NexusFinanceDB extends Dexie {
   }
 }
 
-export const db = new NexusFinanceDB();
+export const db = new MizanDB();

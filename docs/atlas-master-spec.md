@@ -1,4 +1,4 @@
-# NEXUS FINANCE — MASTER SPECIFICATION (Project Atlas, Consolidated v1.1)
+# MIZAN BY MIKARSH — MASTER SPECIFICATION (Project Atlas, Consolidated v1.1)
 
 This document merges and supersedes the original 12-volume Project Atlas spec.
 All prior inconsistencies between volumes have been resolved directly in the
@@ -10,7 +10,7 @@ decision is included inline and marked **[NEW]**.
 
 ## 1. PRODUCT VISION & SCOPE
 
-**Product**: Nexus Finance — a tablet-first, offline-first Personal Finance
+**Product**: Mizan by Mikarsh — a tablet-first, offline-first Personal Finance
 Operating System (PFOS). Combines expense tracking, budgeting, loan/EMI
 management, recurring payments, analytics, forecasting, and local AI-driven
 insights into one application.
@@ -251,7 +251,7 @@ rules, 50+ loans, multiple years of history — no noticeable degradation on
 modern tablets.
 
 **PWA requirements [NEW — not in original spec]**: manifest with
-`name: "Nexus Finance"`, `short_name: "Nexus"`, icons at 192px and 512px plus
+`name: "Mizan by Mikarsh"`, `short_name: "Mizan"`, icons at 192px and 512px plus
 one maskable icon, `theme_color`/`background_color` from design tokens above,
 and a correctly configured Vite `base` + manifest `start_url` matching this
 project's actual GitHub Pages repo path (confirm the exact repo name before
